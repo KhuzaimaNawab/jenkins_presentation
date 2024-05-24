@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo 'Installing dependencies...'
                 script {
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Building the application...'
                 script {
-                    sh 'npm run build'
+                    bat 'npm run build'
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 echo 'Running tests...'
                 script {
-                    sh 'npm run test'
+                    bat 'npm run test'
                 }
             }
         }
@@ -39,9 +39,9 @@ pipeline {
             steps {
                 echo 'Deploying the application to the local machine...'
                 script {
-                    sh "mkdir -p ${DEPLOY_DIR}"
-                    sh "cp -r dist/* ${DEPLOY_DIR}/"
-                    sh "pm2 restart ${APP_NAME} || pm2 start ${DEPLOY_DIR}/main.js --name ${APP_NAME}"
+                    bat "mkdir -p ${DEPLOY_DIR}"
+                    bat "cp -r dist/* ${DEPLOY_DIR}/"
+                    bat "pm2 restart ${APP_NAME} || pm2 start ${DEPLOY_DIR}/main.js --name ${APP_NAME}"
                 }
             }
         }
