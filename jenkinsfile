@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         APP_NAME = 'jenkins_presentation'
-        DEPLOY_DIR = 'C:\Users\hp\Desktop'
+        DEPLOY_DIR = 'C:/Users/hp/Desktop'
         NOTIFY_EMAIL = 'sp21bscs0083@maju.edu.pk'
     }
 
