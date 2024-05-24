@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = 'jenkins_presentation'
+        DEPLOY_DIR = 'C:\Users\hp\Desktop'
+        NOTIFY_EMAIL = 'sp21bscs0083@maju.edu.pk'
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing dependencies...'
+                script {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                script {
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                script {
+                    sh 'npm run test'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application to the local machine...'
+                script {
+                    sh "mkdir -p ${DEPLOY_DIR}"
+                    sh "cp -r dist/* ${DEPLOY_DIR}/"
+                    sh "pm2 restart ${APP_NAME} || pm2 start ${DEPLOY_DIR}/main.js --name ${APP_NAME}"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded'
+            emailext to: "${env.NOTIFY_EMAIL}",
+                     subject: "SUCCESS: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                     body: "Good news! The build #${env.BUILD_NUMBER} succeeded.\n\nCheck it out at ${env.BUILD_URL}"
+        }
+        failure {
+            echo 'Pipeline failed'
+            emailext to: "${env.NOTIFY_EMAIL}",
+                     subject: "FAILURE: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                     body: "Oops! The build #${env.BUILD_NUMBER} failed.\n\nCheck the logs at ${env.BUILD_URL}"
+        }
+    }
+}
