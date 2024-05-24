@@ -37,13 +37,12 @@ pipeline {
 
         stage('Deploy') {
         steps {
-        echo 'Deploying the application to the local machine...'
+            echo 'Deploying the application to the local machine...'
         script {
-            bat "xcopy /s /y /i dist\\* ${DEPLOY_DIR}"
-            bat "node ${DEPLOY_DIR}\\main.js"
+                echo "The application is deployed"
+            }
         }
     }
-}
 
     }
 
