@@ -39,9 +39,8 @@ pipeline {
         steps {
         echo 'Deploying the application to the local machine...'
         script {
-            bat "if not exist ${DEPLOY_DIR} mkdir ${DEPLOY_DIR}"
             bat "xcopy /s /y /i dist\\* ${DEPLOY_DIR}"
-            bat "if exist ${DEPLOY_DIR}\\${APP_NAME} ( pm2 restart ${APP_NAME} ) else ( pm2 start ${DEPLOY_DIR}\\main.js --name ${APP_NAME} )"
+            bat "node ${DEPLOY_DIR}\\main.js"
         }
     }
 }
